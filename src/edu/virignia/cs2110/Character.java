@@ -1,0 +1,143 @@
+package edu.virignia.cs2110;
+
+import java.util.ArrayList;
+
+import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Paint.Style;
+import android.util.AttributeSet;
+import android.view.View;
+
+public abstract class Character extends View
+{
+	//Android Stuff
+	private Paint paint;
+	
+	
+	public Character(Context context, AttributeSet attrs, int defStyleAttr) 
+	{
+		super(context, attrs, defStyleAttr);
+		init();
+	}
+
+	public Character(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		init();
+	}
+
+	public Character(Context context) {
+		super(context);
+		init();
+	}
+	
+	public void init() {
+		paint = new Paint();
+		paint.setColor(0xff00ff00); // single int in hex (Green)
+		paint.setStyle(Paint.Style.FILL);
+		  // first ff = opaque;  first 00 = no red
+		  // second ff = green all the way on;  second 00 = no blue
+		  // could also do: paint.setColor(Color.GREEN);
+		//paint.setStyle(Style.STROKE);
+		paint.setStrokeWidth(3);
+	}
+	
+	// Need to override the onDraw method to tell it what to draw
+		@Override
+		public void onDraw(Canvas c) {
+			super.onDraw(c); // this will erase everything and make it white
+			  // (the default background color), or else we will see the 
+			  // previous version of view (overwriting)
+			
+			//First tiny circle we drew:
+			// Format:  c.drawCircle(cx, cy, radius, paint);
+			// c.drawCircle(40, 20, 15, paint); // small circle
+			
+			// find out height and width of this Canvas:
+			int h = this.getMeasuredHeight();
+			int w = this.getMeasuredWidth();
+			
+			// ** STATIC ** //
+			// c.drawCircle(cx, cy, radius, paint);
+			// centering on x (width), centering on y (height)
+			// taking min of {width, height} and / by 2
+			// (second circle, dividing by 4, for a different sized circle)
+//			c.drawCircle(w/2, h/2, Math.min(w, h)/2, paint);
+//			c.drawCircle(w/2, h/2, Math.min(w, h)/4, paint); //second circle
+			
+			// ** DYNAMIC DISPLAY ** //
+			//int x = (int)(Math.random()*w); // so that x is different each time
+			c.drawCircle(xCoordinate, yCoordinate, 20, paint);
+			//c.drawCircle(x, h/2, Math.min(w, h)/4, paint); //second circle			
+		}
+		
+//----------------------------------------------------------------------------------------------------------------------------------------
+	
+	//Actual stuff
+		protected int xCoordinate;
+		protected int yCoordinate;
+		
+		/*(0,5)
+		 * -
+		 * -
+		 * -
+		 * -
+		 * (0,0) - - - - (5,0)
+		 */
+		protected int velocity;	//How many grid points to move on one interation of move()
+		protected int currentDirection;	//0 = facing up, 1 = facing left, 2 = facing down, 3 = facing right
+		
+		protected int maxHealth;
+		protected int remainingHealth;
+		
+		protected ArrayList<Weapon> listOfWeapons;
+		protected int currentWeaponIndex; //index pointing to which weapon in listOfWeapons is being used
+		
+		protected boolean isEnemy;
+		
+		//Do image somehow
+		
+	public void move()//0 = up, 1 = left, 2 = down, 3 = right
+	{
+		if (currentDirection == 0)
+			yCoordinate += velocity;
+		
+		else if (currentDirection == 1)
+			xCoordinate -= velocity;
+		
+		else if (currentDirection == 2)
+			yCoordinate -= velocity;
+		
+		else
+			xCoordinate += velocity;
+		
+	
+	}
+	
+	public void switchWeapon()
+	{
+		currentWeaponIndex += 1;
+		
+		if (currentWeaponIndex >= listOfWeapons.size())
+			currentWeaponIndex = 0;
+	}
+	
+	public void fireCurrentWeapon()
+	{
+		listOfWeapons.get(currentWeaponIndex).attack();
+	}
+	
+	public void changeHealth(int changeInHealth)
+	{
+		remainingHealth += changeInHealth;
+	}
+	
+	
+	
+	public static void main(String[] args) 
+	{
+		// TODO Auto-generated method stub
+
+	}
+
+}
