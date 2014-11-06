@@ -3,13 +3,16 @@ package edu.virignia.cs2110;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ImageView;
 
-public abstract class Character extends View
+public abstract class Character extends ImageView
 {
 	//Android Stuff
 	private Paint paint;
@@ -57,6 +60,18 @@ public abstract class Character extends View
 			int h = this.getMeasuredHeight();
 			int w = this.getMeasuredWidth();
 			
+			//setFrame(xCoordinate, yCoordinate, xCoordinate + 50, yCoordinate + 50);
+			
+//			 Bitmap myBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.guy);
+//	          c.drawBitmap(myBitmap, xCoordinate, xCoordinate, null);
+//	          
+			
+			setImageResource(R.drawable.guy);
+//			
+//			setScaleX((float) h/(10 * getDrawable().getIntrinsicHeight()));
+//			setScaleY((float) w/(10 * getDrawable().getIntrinsicWidth()));
+	          //setFrame(xCoordinate, yCoordinate,xCoordinate + 50, yCoordinate + 50);
+			
 			// ** STATIC ** //
 			// c.drawCircle(cx, cy, radius, paint);
 			// centering on x (width), centering on y (height)
@@ -67,7 +82,7 @@ public abstract class Character extends View
 			
 			// ** DYNAMIC DISPLAY ** //
 			//int x = (int)(Math.random()*w); // so that x is different each time
-			c.drawCircle(xCoordinate, yCoordinate, 20, paint);
+			//c.drawCircle(xCoordinate, yCoordinate, 20, paint);
 			//c.drawCircle(x, h/2, Math.min(w, h)/4, paint); //second circle			
 		}
 		
@@ -100,13 +115,13 @@ public abstract class Character extends View
 	public void move()//0 = up, 1 = left, 2 = down, 3 = right
 	{
 		if (currentDirection == 0)
-			yCoordinate += velocity;
+			yCoordinate -= velocity;
 		
 		else if (currentDirection == 1)
 			xCoordinate -= velocity;
 		
 		else if (currentDirection == 2)
-			yCoordinate -= velocity;
+			yCoordinate += velocity;
 		
 		else
 			xCoordinate += velocity;
@@ -138,6 +153,30 @@ public abstract class Character extends View
 	{
 		// TODO Auto-generated method stub
 
+	}
+
+	public int getCurrentDirection() {
+		return currentDirection;
+	}
+
+	public void setCurrentDirection(int currentDirection) {
+		this.currentDirection = currentDirection;
+	}
+
+	public int getxCoordinate() {
+		return xCoordinate;
+	}
+
+	public int getyCoordinate() {
+		return yCoordinate;
+	}
+
+	public void setxCoordinate(int xCoordinate) {
+		this.xCoordinate = xCoordinate;
+	}
+
+	public void setyCoordinate(int yCoordinate) {
+		this.yCoordinate = yCoordinate;
 	}
 
 }
